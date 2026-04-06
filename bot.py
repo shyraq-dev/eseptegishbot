@@ -1,6 +1,8 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher, Router, F
+from dotenv import load_dotenv
+import os
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 import re
@@ -265,8 +267,12 @@ async def calculator_callback(callback: CallbackQuery):
             await callback.answer()
 
 async def main():
-    BOT_TOKEN = "8570492218:AAFfJXdUGYf9FgAIS8MRXaKv5jbep21IUqw"
-
+    BOT_TOKEN = os.getenv("BOT_TOKEN")
+    
+    if not BOT_TOKEN:
+        logger.error("❌ BOT_TOKEN табылмады! .env файлын тексер.")
+        return
+    
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
     dp.include_router(router)
